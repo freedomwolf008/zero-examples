@@ -15,6 +15,16 @@ import (
 var configFile = flag.String("f", "etc/file-api.yaml", "the config file")
 
 func main() {
+
+	//对于切片来说，使用%p格式化输出时，如果前面不加取地址符，
+	//那么打印的是切片中第一个元素的地址；如果前面加上取地址符&，那么打印的是该切片的地址
+	var arr = []int{1, 2, 3, 4, 5}
+	fmt.Printf("arr pointer: %p\n", arr)
+	fmt.Printf("arr val: %v\n", arr)
+	fmt.Printf("arr val: %p\n", &arr[0])
+	fmt.Printf("arr pointer: %p\n", &arr)
+	arr = append(arr, 6)
+	fmt.Printf("after append,arr pointer: %p\n", &arr)
 	flag.Parse()
 
 	var c config.Config

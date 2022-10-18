@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -10,6 +11,7 @@ import (
 	"monolithic/internal/svc"
 	"monolithic/internal/types"
 
+	"github.com/xuri/excelize/v2"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -38,6 +40,25 @@ func (l *UploadLogic) Upload() (resp *types.UploadResponse, err error) {
 	}
 	defer file.Close()
 
+	f, err := excelize.OpenReader(file)
+	if err != nil {
+		return &types.UploadResponse{
+			Code: 1,
+		}, nil
+	}
+
+	defer func() {
+		// Close the spreadsheet.
+		if err := f.Close(); err != nil {
+			fmt.Println(err)
+		}
+	}()
+	// Get value from cell by given worksheet name and cell reference.
+	cell, err := f.GetCellValue("udmuser", "B2")
+	if err != nil {
+		return
+	}
+	logx.Infof("Sheet1 B2: %+v", cell)
 	logx.Infof("upload file: %+v, file size: %d, MIME header: %+v",
 		handler.Filename, handler.Size, handler.Header)
 
