@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 
 	"monolithic/internal/config"
 	"monolithic/internal/handler"
@@ -25,6 +26,13 @@ func main() {
 	fmt.Printf("arr pointer: %p\n", &arr)
 	arr = append(arr, 6)
 	fmt.Printf("after append,arr pointer: %p\n", &arr)
+
+	//var count []int
+	//var count [1]int
+	//count := [1]int{0}
+	count := make([]int, 1)
+	log.Printf("count: %d\n", count[0])
+
 	flag.Parse()
 
 	var c config.Config
